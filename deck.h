@@ -4,6 +4,8 @@
 #include "card.h"
 #include "player.h"
 
+#define CARDS_PER_DECK 52
+
 typedef struct deck {
   card* cards;
   int cards_num;

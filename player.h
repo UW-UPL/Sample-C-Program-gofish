@@ -3,6 +3,8 @@
 
 #include "deck.h"
 
+#define CARDS_PER_PLAYER 5
+
 typedef struct player {
   char* name;
   int name_len;

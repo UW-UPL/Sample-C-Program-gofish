@@ -1,5 +1,5 @@
-//This is a function!
-//move me to deck.c
+#include <stdlib.h>
+
 deck generate_game_deck() {
   deck new_deck;
   
@@ -18,6 +18,7 @@ deck generate_game_deck() {
 
   //shuffle the deck! (by swapping cards randomly)
   for(int i = 0; i < NUM_SWAPS; i++) {
+    //we swap two randomly chosen cards - that's what rand does.
     swap_cards(new_deck.cards, (rand()%CARDS_PER_DECK), (rand()%CARDS_PER_DECK));
   }
 
@@ -31,5 +32,9 @@ void deal_cards(deck* deck, players* players, int players_num) {
       //move a card from the deck to the player's hand, resizing things appropriately.
     }
   }
+}
+
+void free_deck(deck to_free) {
+  free(to_free.cards);
 }
 
