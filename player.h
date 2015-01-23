@@ -9,4 +9,6 @@ typedef struct player {
   deck my_deck;
 }
 
+int generate_players(int argc, char** argv, player* players);
+
 #endif

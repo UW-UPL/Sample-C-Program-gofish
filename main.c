@@ -40,7 +40,11 @@ int main(int argc, char** argv) {
   player* players;
   int players_num;
 
+  //we have a "deck" of cards.
   deck game_deck;
+
+  //status for game won/lost!
+  int game_over = 0;
 
   //Structure:
 
@@ -58,72 +62,23 @@ int main(int argc, char** argv) {
   game_deck = generate_game_deck();
 
   //Deal cards to each player.
+  deal_cards(&game_deck, players, players_num);
+
+  //game loop goes here!
+  while(!game_over) {
+    int current_player;
+    for(current_player = 0; current_player < players_num; current_player++) {
+      run_turn(current_player); //this is a function
+    }
+  }
+  
   exit(EXIT_SUCCESS);
 }
 
-//This is a function!
-//move me to deck.c
-deck generate_game_deck() {
-  deck new_deck;
-  
-  //allocate memory for the deck
-  new_deck.cards_num = CARDS_PER_DECK;
-  new_deck.cards = malloc(CARDS_PER_DECK * sizeof(card));
+void run_turn(int current_player) {
+  //get input from player - other player and desired rank.
 
-  //generate cards!
-  int i,j;
-  for(i = 0; i < NUM_SUITS; i++) {
-    for(j = 0; j < NUM_RANKS; j++) {
-      cards[(i*NUM_RANKS) + j].suit = i;
-      cards[(i*NUM_RANKS) + j].rank = j;
-    }
-  }
+  //check other player's deck
 
-  //shuffle the deck! (by swapping cards randomly)
-  for(int i = 0; i < NUM_SWAPS; i++) {
-    swap_cards(new_deck.cards, (rand()%CARDS_PER_DECK), (rand()%CARDS_PER_DECK));
-  }
-
-  return new_deck;
-}
-
-//move to card.c or deck.c?
-void swap_cards(card* cards, int a, int b) {
-  card temp;
-  memcpy(&temp, (cards + a), sizeof(card));
-  memcpy((cards + a), (cards + b), sizeof(card));
-  memcpy((cards + b), &temp, sizeof(card)); 
-}
-
-void deal_cards(deck* deck, players* players, int players_num) {
-  int i, j;
-  for(i = 0; i < CARDS_PER_PLAYER; i++) {
-    for(j = 0; j < players_num; j++) {
-      //move a card from the deck to the player's hand, resizing things appropriately.
-    }
-  }
-}
-
-//Also a function!
-//move me to player.c
-int generate_players(int argc, char** argv, player* players) {
-  
-  int i;
-  int players_num = argc-1;
-  
-  //allocate the memory for the players
-  players = malloc(players_num * sizeof(player));
-  
-  if(players == NULL) {
-    printf("Error allocating memory for players!\nQuitting...\n");
-    exit(EXIT_FAILURE);
-  }
-
-  //set up the player's name!
-  for(i = 0; i < players_num; i++) {
-    players[i].name_len = strlen(argv[i+1]);
-    players[i].name = malloc(players[i].name_len);  
-  }
-
-  return players_num;
+  //take card from player if successful. 
 }
