@@ -1,5 +1,7 @@
 #include <stdlib.h>
 
+#include "deck.h"
+
 deck generate_game_deck() {
   deck new_deck;
   
