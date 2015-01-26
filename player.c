@@ -16,7 +16,8 @@ int generate_players(int argc, char** argv, player* players) {
   //set up the player's name!
   for(i = 0; i < players_num; i++) {
     players[i].name_len = strlen(argv[i+1]);
-    players[i].name = malloc(players[i].name_len);  
+    players[i].name = malloc(players[i].name_len);
+    players[i].name = strcpy(players[i].name, argv[i+1], players[i].name_len);
   }
 
   return players_num;
