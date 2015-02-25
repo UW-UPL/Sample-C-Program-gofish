@@ -18,6 +18,11 @@ deck generate_game_deck() {
     }
   }
 
+  //connect the list
+  for(i = 0; i < CARDS_PER_DECK - 1; i++){
+    cards[i].next = (cards + i);
+  }
+
   //shuffle the deck! (by swapping cards randomly)
   for(int i = 0; i < NUM_SWAPS; i++) {
     //we swap two randomly chosen cards - that's what rand does.
@@ -40,3 +45,6 @@ void free_deck(deck to_free) {
   free(to_free.cards);
 }
 
+void move_card(deck* from, deck* to, int card_index) {
+
+}

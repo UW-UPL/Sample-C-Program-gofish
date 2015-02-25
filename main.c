@@ -81,10 +81,19 @@ int main(int argc, char** argv) {
 }
 
 void run_turn(int current_player) {
+
+  int other_player;
+  int rank;
+  int ch; //used for waiting for input.
   //print current player name.
   printf("%s's turn.\n", players[i].name);
 
-  //wait for input, then display the 
+  //flush input buffer, wait for input, then display the player's cards.
+  while ((ch=getchar()) != EOF && ch != '\n');
+  getc();
+
+  /*display cards*/
+
   //get input from player - other player and desired rank.
   printf("Who do you want to take a card from?\n");
 
@@ -97,12 +106,20 @@ void run_turn(int current_player) {
   }
 
   //actually get player number
+  scanf("%d", other_player);
 
   //get desired rank
+  printf("What card rank do you want?");
+  scanf("%d", rank);
 
   //check other player's deck
 
   //take card from player if successful. 
 
   //otherwise draw card from deck (if not empty)
+  
+
+  //wait for input to go to next player's turn.
+
+
 }
