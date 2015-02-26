@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
   while(!game_over) {
     int current_player;
     for(current_player = 0; current_player < players_num; current_player++) {
-      run_turn(current_player);
+      game_over = run_turn(current_player);
     }
   }
   
@@ -85,6 +85,7 @@ void run_turn(int current_player) {
   int other_player;
   int rank;
   int ch; //used for waiting for input.
+  card* card;
   //print current player name.
   printf("%s's turn.\n", players[i].name);
 
@@ -113,7 +114,8 @@ void run_turn(int current_player) {
   scanf("%d", rank);
 
   //check other player's deck
-
+  card = players[other_player].deck.cards; //get the list of cards.
+  while(card != NULL);
   //take card from player if successful. 
 
   //otherwise draw card from deck (if not empty)

@@ -10,6 +10,6 @@ typedef struct _card {
   struct _card* next;
 }card;
 
-void swap_cards(card* cards, int a, int b);
+int swap_cards(card* cards, int a, int b);
 
 #endif

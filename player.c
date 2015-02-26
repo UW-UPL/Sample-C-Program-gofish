@@ -24,8 +24,6 @@ int generate_players(int argc, char** argv, player* players) {
 }
 
 void free_player(player free_me) { 
-  //free my deck
-  free_deck(free_me.deck);
   //free my name
   free(free_me.name);
 }

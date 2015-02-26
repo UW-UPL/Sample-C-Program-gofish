@@ -36,15 +36,28 @@ void deal_cards(deck* deck, players* players, int players_num) {
   int i, j;
   for(i = 0; i < CARDS_PER_PLAYER; i++) {
     for(j = 0; j < players_num; j++) {
-      //move a card from the deck to the player's hand, resizing things appropriately.
+      move_card(deck, player[j]->deck, 0); //move from top of deck
+      deck->cards_num--;
+      player[j]->my_deck->cards_num++;
     }
   }
 }
 
-void free_deck(deck to_free) {
-  free(to_free.cards);
-}
-
 void move_card(deck* from, deck* to, int card_index) {
+  card* card_parent;
+  card* card;
+  
+  //get card parent
+  card_parent = from->cards;
+  for(int i = 0; i < card_index-1; i++) {
+    card_parent = card_parent->next;
+  }
 
+  //remove from from deck
+  card = card_parent->next;
+  card_parent->next = card->next; //this skips over our card in the old list
+
+  //add to to deck (at top!
+  card->next = to->cards;
+  to->cards = card;
 }
