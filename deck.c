@@ -57,7 +57,11 @@ void move_card(deck* from, deck* to, int card_index) {
   card = card_parent->next;
   card_parent->next = card->next; //this skips over our card in the old list
 
-  //add to to deck (at top!
+  //add to to deck (at top)!
   card->next = to->cards;
   to->cards = card;
+
+  //change card counts for "to" and "from"
+  to->cards_num++;
+  from->cards_num--;
 }
