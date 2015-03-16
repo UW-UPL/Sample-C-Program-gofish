@@ -30,7 +30,25 @@ int swap_cards(card* cards, int a, int b) {
   a_parent->next = b_parent->next;
   b_parent->next = temp;
 
+  return 0
+}
 
+int take_card(card* from, card* to) {
+  card* from_parent, to_parent, temp;
+  int i;
+  
+  from_parent = from;
+  to_parent = to;
 
+  //take happens now
+  //remove from the from list
+  temp = from_parent->next;
+  from_parent->next = from_parent->next->next;
+  from_parent->next = temp;
+
+  //add to to list!
+  temp->next = from_parent->next;
+  from_parent->next = temp;
+  
 
 }

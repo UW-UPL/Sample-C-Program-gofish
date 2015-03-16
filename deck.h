@@ -6,13 +6,13 @@
 
 #define CARDS_PER_DECK 52
 
-typedef struct deck {
+typedef struct _deck {
   card* cards;
   int cards_num;
-};
+} deck;
 
 deck generate_game_deck();
 
-void deal_cards(deck* deck, players* players, int players_num);
+void deal_cards(deck* deck, player* players, int players_num);
 void move_card(deck* from, deck* to, int card_index);
 #endif

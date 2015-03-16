@@ -5,11 +5,11 @@
 
 #define CARDS_PER_PLAYER 5
 
-typedef struct player {
+typedef struct _player {
   char* name;
   int name_len;
   deck my_deck;
-}
+} player;
 
 int generate_players(int argc, char** argv, player* players);
 

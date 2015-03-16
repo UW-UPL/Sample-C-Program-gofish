@@ -80,12 +80,16 @@ int main(int argc, char** argv) {
   exit(EXIT_SUCCESS);
 }
 
-void run_turn(int current_player) {
+int run_turn(int current_player) {
 
   int other_player;
   int rank;
   int ch; //used for waiting for input.
+  int taken;
   card* card;
+
+  taken = 0;
+
   //print current player name.
   printf("%s's turn.\n", players[i].name);
 
@@ -94,6 +98,11 @@ void run_turn(int current_player) {
   getc();
 
   /*display cards*/
+  //get first card
+  card = players[current_player].my_deck.cards;
+  while(card->next != NULL) {
+    printf("Suit: %d Rank: %d\n", card.suit, card.rank);
+  }
 
   //get input from player - other player and desired rank.
   printf("Who do you want to take a card from?\n");
@@ -114,14 +123,18 @@ void run_turn(int current_player) {
   scanf("%d", rank);
 
   //check other player's deck
-  card = players[other_player].deck.cards; //get the list of cards.
-  while(card != NULL);
-  //take card from player if successful. 
+  card = players[other_player]->my_deck.cards; //get the list of cards.
+  while(card->next != NULL) {
+    if(card->next->rank == rank) {  //take card from player if successful.
+      take_card(card, players[current_player]->my_deck->cards);
+      taken = 1;
+    }
+  }
 
   //otherwise draw card from deck (if not empty)
-  
+  if(!taken) take_card(game_deck->cards, players[current_player]->my_deck->cards);
 
-  //wait for input to go to next player's turn.
+  //check for matches! (implement later)
 
 
 }
