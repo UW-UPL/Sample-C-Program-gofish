@@ -13,4 +13,6 @@ typedef struct _player {
 
 int generate_players(int argc, char** argv, player* players);
 
+void deal_cards(deck* deck, player* players, int players_num);
+
 #endif

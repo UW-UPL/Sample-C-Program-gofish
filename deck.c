@@ -32,16 +32,6 @@ deck generate_game_deck() {
   return new_deck;
 }
 
-void deal_cards(deck* deck, players* players, int players_num) {
-  int i, j;
-  for(i = 0; i < CARDS_PER_PLAYER; i++) {
-    for(j = 0; j < players_num; j++) {
-      move_card(deck, player[j]->deck, 0); //move from top of deck
-      deck->cards_num--;
-      player[j]->my_deck->cards_num++;
-    }
-  }
-}
 
 void move_card(deck* from, deck* to, int card_index) {
   card* card_parent;

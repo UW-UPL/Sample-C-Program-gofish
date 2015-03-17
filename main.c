@@ -9,6 +9,7 @@
 
 //Includes with "" are for local files
 #include "card.h"
+
 #include "player.h"
 #include "deck.h"
 
@@ -63,11 +64,11 @@ int main(int argc, char** argv) {
   while(!game_over) {
     int current_player;
     for(current_player = 0; current_player < players_num; current_player++) {
-      game_over = run_turn(current_player);
+      game_over = run_turn(current_player, players, players_num, &game_deck);
     }
   }
   
-  printf("Game is finished woo");
+  printf("Game is finished woo, player $d won\n", game_over);
 
   //should take down all of the malloc'd things here just to
   //show how it should be done.
@@ -80,7 +81,7 @@ int main(int argc, char** argv) {
   exit(EXIT_SUCCESS);
 }
 
-int run_turn(int current_player) {
+int run_turn(int current_player, player* players, int players_num, deck* game_deck) {
 
   int other_player;
   int rank;
@@ -91,17 +92,17 @@ int run_turn(int current_player) {
   taken = 0;
 
   //print current player name.
-  printf("%s's turn.\n", players[i].name);
+  printf("%s's turn.\n", players[current_player].name);
 
   //flush input buffer, wait for input, then display the player's cards.
   while ((ch=getchar()) != EOF && ch != '\n');
-  getc();
+  getchar();
 
   /*display cards*/
   //get first card
   card = players[current_player].my_deck.cards;
   while(card->next != NULL) {
-    printf("Suit: %d Rank: %d\n", card.suit, card.rank);
+    printf("Suit: %d Rank: %d\n", card->suit, card->rank);
   }
 
   //get input from player - other player and desired rank.
@@ -123,18 +124,21 @@ int run_turn(int current_player) {
   scanf("%d", rank);
 
   //check other player's deck
-  card = players[other_player]->my_deck.cards; //get the list of cards.
+  card = players[other_player].my_deck.cards; //get the list of cards.
   while(card->next != NULL) {
     if(card->next->rank == rank) {  //take card from player if successful.
-      take_card(card, players[current_player]->my_deck->cards);
+      take_card(card, players[current_player].my_deck.cards);
       taken = 1;
     }
   }
 
   //otherwise draw card from deck (if not empty)
-  if(!taken) take_card(game_deck->cards, players[current_player]->my_deck->cards);
+  if(!taken) take_card(game_deck->cards, players[current_player].my_deck.cards);
 
   //check for matches! (implement later)
 
+  //if(win_condition) return current_player;
+
+  return 0;
 
 }

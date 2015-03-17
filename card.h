@@ -11,6 +11,6 @@ typedef struct _card {
 }card;
 
 int swap_cards(card* cards, int a, int b);
-int take_card(card* from, card* to, int num);
+int take_card(card* from, card* to);
 
 #endif
