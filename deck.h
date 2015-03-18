@@ -7,11 +7,11 @@
 #define CARDS_PER_DECK 52
 
 typedef struct _deck {
-  card* cards;
+  card *cards;
   int cards_num;
 } deck;
 
 deck generate_game_deck();
 
-void move_card(deck* from, deck* to, int card_index);
+void move_card(deck *from, deck *to, int card_index);
 #endif

@@ -33,9 +33,9 @@ deck generate_game_deck() {
 }
 
 
-void move_card(deck* from, deck* to, int card_index) {
-  card* card_parent;
-  card* card;
+void move_card(deck *from, deck *to, int card_index) {
+  card *card_parent;
+  card *card;
   
   //get card parent
   card_parent = from->cards;

@@ -1,6 +1,6 @@
 //Example card? game for UPL's C tutorial.
 //Needs to use loops, functions, arrays (dynamically allocated), structs, pointers.
-//Written by Nik Ingrassia 2015
+//Copyright Nik Ingrassia and Riccardo Mutschlechner, 2015
 
 //Includes with <> are for system libraries
 #include <stdio.h>
@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
     }
   }
   
-  printf("Game is finished woo, player $d won\n", game_over);
+  printf("Game is finished woo, player %d won\n", game_over);
 
   //should take down all of the malloc'd things here just to
   //show how it should be done.
@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
   exit(EXIT_SUCCESS);
 }
 
-int run_turn(int current_player, player* players, int players_num, deck* game_deck) {
+int run_turn(int current_player, player *players, int players_num, deck *game_deck) {
 
   int other_player;
   int rank;

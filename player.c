@@ -1,6 +1,6 @@
 #include "player.h"
 
-int generate_players(int argc, char** argv, player* players) {
+int generate_players(int argc, char **argv, player *players) {
   
   int i;
   int players_num = argc-1;
