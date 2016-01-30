@@ -2,10 +2,9 @@ CC := gcc
 CFLAGS := -Wall
 
 BINS := \
-	main \
 	deck \
 	player \
-	card
+	game
 
 BINS := $(addsuffix .o, $(BINS))
 
@@ -17,7 +16,7 @@ clean:
 	rm -f $(BINS) gofish
 
 gofish: $(BINS)
-	gcc main.o deck.o player.o card.o -o gofish
+	gcc $(BINS) -o gofish
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
