@@ -17,6 +17,9 @@ clean:
 
 gofish: $(BINS)
 	gcc $(BINS) -o gofish
+	@echo ""
+	@echo "The game compiled with no build problems."
+	@echo "Use ./gofish to play!"
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
