@@ -47,6 +47,9 @@ void deck_populate(struct deck* d)
 	}
 }
 
+/**
+ * Shuffle the given deck, d.
+ */
 void deck_shuffle(struct deck* d)
 {
 	/* Just to a limited swapping randomization */
@@ -161,8 +164,15 @@ struct card* deck_contains(struct deck* d, rank_t r)
 	return NULL;
 }
 
+/**
+ * Check to see if the deck contains a completed set of cards.
+ * Return the rank of the card that has a complete set, and
+ * removes all of those cards from the deck. Returns -1 if
+ * no set was found.
+ */
 rank_t deck_get_set(struct deck* d)
 {
+	/* Keep track of the cards we have */
 	char card_counts[RANK_MAX + 1];
 	memset(card_counts, 0, RANK_MAX + 1);
 
@@ -182,9 +192,9 @@ rank_t deck_get_set(struct deck* d)
 		
 			/* Remove all of these cards */
 			struct card* c = NULL;
-
 			do
 			{
+				/* Find and remove a card */
 				c = deck_contains(d, x);
 	
 				/* Did we get a card? */
@@ -195,11 +205,11 @@ rank_t deck_get_set(struct deck* d)
 				}
 			} while(c != NULL);
 
-			/* return this rank */
+			/* Return this rank */
 			return x;
 		}
 	}
 
-	/* We found nothing. */
+	/* We found no complete sets */
 	return -1;
 }

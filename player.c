@@ -17,6 +17,12 @@
 
 #include "gofish.h"
 
+/**
+ * Setup the given player with the given values. The name will
+ * be copied into the player struct. The player will be setup
+ * with the proper playing functions based on whether human
+ * is 1 (TRUE) or 0 (FALSE).
+ */
 void player_setup(struct player* p, const char* name, int human)
 {
 	/* Copy in the name */
@@ -80,9 +86,9 @@ int human_player_turn(struct player* p,
 	struct player* human_p = NULL; /* The player we are asking*/
 
 	/* Print a couple of new lines */
-	printf("\n\n\n");
+	printf("\n\n");
 
-	/* Welcome, turn prompt */
+	/* Your turn prompt */
 	printf("%s, it is your turn\n", p->name);
 
 	/* Let the player know what is in their hand */
@@ -133,6 +139,9 @@ int human_player_turn(struct player* p,
 #define INPUT_BUFF_MAX 64
 	char input_buff[INPUT_BUFF_MAX];
 
+	/**
+	 * Get the card rank that the human is asking for 
+	 */
 	do
 	{
 		human_r = -1;
@@ -195,6 +204,9 @@ int human_player_turn(struct player* p,
 				break;
 		}
 
+		/**
+ 		 * Print out opponents
+		 */
 		printf("\nValid players:");
 		for(x = 0;x < PLAYERS_MAX;x++)
 		{
@@ -233,7 +245,7 @@ int human_player_turn(struct player* p,
 		/* Did we encounter an I/O error? */
 		if(sz <= 0)
 		{
-			/* The user has quit */
+			/* A system error has occurred. */
 			return -1;
 		}
 
@@ -274,6 +286,12 @@ int human_player_turn(struct player* p,
 	return 0;
 }
 
+/**
+ * Logic function for doing a computer player's turn. The computer
+ * players will basically do everything as random as possible. They
+ * will ask random players for cards that they have in their hand.
+ * Returns 0 on success, -1 if a move could not be generated.
+ */
 int computer_player_turn(struct player* p,
         rank_t* guess_rank,
         struct player** guess_player)

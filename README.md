@@ -13,6 +13,8 @@ make all
 ./gofish
 ```
 
+And you're ready to play!
+
 ## Still needs to get done
 
  - Check after each turn to see if the game is over
