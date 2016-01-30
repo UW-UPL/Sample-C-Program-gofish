@@ -207,6 +207,7 @@ int main(int argc, char** argv)
 			struct player* curr_player = 
 				game_players + player_num;
 
+			printf("Top of player's deck: %d\n", curr_player->d.top);
 			/**
 			 * Does this player have any cards in their hand?
 			 */
