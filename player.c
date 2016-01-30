@@ -19,6 +19,8 @@ void player_setup(struct player* p, const char* name, int human)
 		/* Use the computer player's turn method */
 		p->my_turn = computer_player_turn;
 	}
+
+	p->books = 0;
 }
 
 /**
@@ -75,8 +77,8 @@ int human_player_turn(struct player* p,
 	printf("Here is your hand:\n\t");
 
 	/* Count how many of each card do we have */
-	char cards_count[RANK_MAX];
-	memset(cards_count, 0, RANK_MAX);
+	char cards_count[RANK_MAX + 1];
+	memset(cards_count, 0, RANK_MAX + 1);
 
 	int x;
 	for(x = 0;x <= p->d.top;x++)

@@ -148,3 +148,46 @@ struct card* deck_contains(struct deck* d, rank_t r)
 
 	return NULL;
 }
+
+rank_t deck_get_set(struct deck* d)
+{
+	char card_counts[RANK_MAX + 1];
+	memset(card_counts, 0, RANK_MAX + 1);
+
+	int x;
+	for(x = 0;x <= d->top;x++)
+	{
+		/* Increment card counts for this card rank */
+		card_counts[d->cards[x].r]++;
+	}
+
+	/* Did we find any sets? */
+	for(x = R2;x <= RANK_MAX;x++)
+	{
+		if(card_counts[x] >= 4)
+		{
+			/** We found a set! */
+		
+			/* Remove all of these cards */
+			struct card* c = NULL;
+
+			do
+			{
+				c = deck_contains(d, x);
+	
+				/* Did we get a card? */
+				if(c)
+				{
+					/* Free the card*/
+					free(c);
+				}
+			} while(c != NULL);
+
+			/* return this rank */
+			return x;
+		}
+	}
+
+	/* We found nothing. */
+	return -1;
+}

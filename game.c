@@ -236,6 +236,25 @@ int main(int argc, char** argv)
 				/* Sleep before the player goes again */
 				sleep(DIALOG_SPEED);
 
+				/** 
+				 * Do a quick check to see if the player 
+				 * acquired a book 
+				 */
+				rank_t set = -1;
+				do
+				{
+					set = deck_get_set(&curr_player->d);
+
+					if(set > 0)
+					{
+						printf("%s: I have all of the %s\'s.\n",
+								curr_player->name, 
+								rank_names[set]);
+						curr_player->books++;
+						sleep(DIALOG_SPEED);
+					}
+				} while(set != -1);
+
 				/* This player goes again */
 				player_num--;
 				continue;
@@ -245,7 +264,7 @@ int main(int argc, char** argv)
 						rank_names[r]);
 				/* Sleep before draw */
 				sleep(DIALOG_SPEED);
-			
+
 				struct card* c = deck_draw(&game_deck);
 				if(c != NULL)
 				{
@@ -253,16 +272,46 @@ int main(int argc, char** argv)
 					printf("game: %s drew a card.\n", curr_player->name);
 					/* Add the card to the player's deck */
 					deck_put(&curr_player->d, c);
+
+					/* Did the player get the card they asked for? */
+					if(c->r == r)
+					{
+						sleep(DIALOG_SPEED);
+						/* Player goes again */
+						player_num--;
+
+						printf("game: %s drew the card they asked for.",
+								curr_player->name);
+					}
+
 					/* Free the card */
 					free(c);
-
 				} else {
 					/* We didn't get a card. */
 					printf("game: the deck is empty.\n");
 				}
-
-				/* Sleep before player goes */
+			
+				/* Sleep before the next player goes */
 				sleep(DIALOG_SPEED);
+
+				/** 
+                                 * Do a quick check to see if the player 
+                                 * acquired a book 
+                                 */
+                                rank_t set = -1;
+                                do
+                                {
+                                        set = deck_get_set(&curr_player->d);
+
+                                        if(set > 0)
+                                        {
+                                                printf("%s: I have all of the %s\'s.\n",
+                                                                curr_player->name, 
+                                                                rank_names[set]);
+                                                curr_player->books++;
+                                                sleep(DIALOG_SPEED);
+                                        }
+                                } while(set != -1);
 			}
 		}
 	}

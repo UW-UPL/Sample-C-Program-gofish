@@ -42,7 +42,7 @@
 /** ^^ Header guard */
 
 /* How slow should the dialog go? */
-#define DIALOG_SPEED 4
+#define DIALOG_SPEED 3
 
 /**
  * The suit of a given card
@@ -105,6 +105,7 @@ struct player
 {
 	struct deck d; /* The player's hand */
 	char name[NAME_MAX]; /* The player's name */
+	int books; /* How many sets has the player acquired? */
 
 	/** Functions for player here */
 
@@ -160,6 +161,14 @@ struct card* deck_draw(struct deck* d);
  * such card in the deck.
  */
 struct card* deck_contains(struct deck* d, rank_t r);
+
+/**
+ * Check to see if the deck contains a completed set of cards.
+ * Return the rank of the card that has a complete set, and
+ * removes all of those cards from the deck. Returns -1 if
+ * no set was found.
+ */
+rank_t deck_get_set(struct deck* d);
 
 /** Functions for manipulating players */
 
