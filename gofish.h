@@ -41,8 +41,8 @@
 #define _GOFISH_H_
 /** ^^ Header guard */
 
-/* Dependant headers */
-#include <stdlib.h> /* Needed for NULL */
+/* How slow should the dialog go? */
+#define DIALOG_SPEED 4
 
 /**
  * The suit of a given card
@@ -103,7 +103,7 @@ struct deck
  */
 struct player 
 {
-	struct deck* d; /* The player's hand */
+	struct deck d; /* The player's hand */
 	char name[NAME_MAX]; /* The player's name */
 
 	/** Functions for player here */
@@ -124,19 +124,21 @@ struct player
 /** The players in the game (defined in game.c) */
 extern struct player game_players[PLAYERS_MAX];
 
-/** The functions for manipulating decks.*/
+/** The amount of players that are actually playing (defined in game.c)*/
+extern int player_count;
 
-/**
- * Allocate a new deck for the game. Returns a pointer to a new
- * deck object on success, NULL on failure.
- */
-struct deck* deck_alloc(void);
+/** The functions for manipulating decks.*/
 
 /**
  * Fill a deck with the 52 game cards. Takes the deck, d, as
  * the parameter.
  */
 void deck_populate(struct deck* d);
+
+/**
+ * Shuffle the given deck, d.
+ */
+void deck_shuffle(struct deck* d);
 
 /**
  * Puts the given card, c, in the given deck, d. Returns 0 on
@@ -175,6 +177,16 @@ void player_setup(struct player* p, const char* name, int human);
  * returns 0 on success.
  */
 int human_player_turn(struct player* p,
+        rank_t* guess_rank,
+        struct player** guess_player);
+
+/**
+ * Logic function for doing a computer player's turn. The computer
+ * players will basically do everything as random as possible. They
+ * will ask random players for cards that they have in their hand.
+ * Returns 0 on success, -1 if a move could not be generated.
+ */
+int computer_player_turn(struct player* p,
         rank_t* guess_rank,
         struct player** guess_player);
 

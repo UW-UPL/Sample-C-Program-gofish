@@ -1,25 +1,8 @@
 #include <stdio.h> /** Needed for printf */
 #include <string.h> /** Needed for memmove */
-#include <stdlib.h> /** Needed for malloc */
+#include <stdlib.h> /** Needed for malloc and rand */
 
 #include "gofish.h"
-
-/**
- * Allocate a new deck for the game. Returns a pointer to a new
- * deck object on success, NULL on failure.
- */
-struct deck* deck_alloc(void)
-{
-	/* Allocate the deck on the heap using malloc */
-	struct deck* d = malloc(sizeof(struct deck));
-
-	/* Initlize the deck (this is call zeroing) */
-	memset(d, 0, sizeof(struct deck));
-	d->top = -1; /* The deck is empty */
-
-	/* Return the deck as the result */
-	return d;
-}
 
 /**
  * Fill a deck with the 52 game cards. Takes the deck, d, as
@@ -27,6 +10,7 @@ struct deck* deck_alloc(void)
  */
 void deck_populate(struct deck* d)
 {
+	d->top = -1;
 	rank_t r;
 	suit_t s;
 
@@ -49,9 +33,27 @@ void deck_populate(struct deck* d)
 			}
 		}
 	}
+}
 
-	/* Adjust the top index */
-	d->top = DECK_SIZE - 1;
+void deck_shuffle(struct deck* d)
+{
+	/* Just to a limited swapping randomization */
+	int x;
+	for(x = 0;x < 10000;x++)
+	{
+		/* Pick 2 indexes */
+		int index_1 = rand() % (d->top + 1);
+		int index_2 = rand() % (d->top + 1);
+
+		/* Swap the two values at the given indexes */
+		struct card tmp;
+		/* Save index_1 in tmp */
+		memmove(&tmp, d->cards + index_1, sizeof(struct card));
+		/* index_1 = index_2*/
+		memmove(d->cards + index_1, d->cards + index_2, sizeof(struct card));
+		/* index_2 = tmp */
+		memmove(d->cards + index_2, &tmp, sizeof(struct card));
+	}
 }
 
 /**
@@ -64,14 +66,15 @@ int deck_put(struct deck* d, struct card* c)
 	if(d->top == DECK_SIZE - 1)
 	{
 		/* Can't add to a full deck */
-		return -1;
+		printf("go fish: tried to add card to full deck!\n");
+		exit(1);
 	}
 
 	/* Increment the top index */
 	d->top++;
 
 	/* Put the card at the top index */
-	memmove(c, d->cards + d->top, sizeof(struct card));
+	memmove(d->cards + d->top, c, sizeof(struct card));
 
 	return 0; /* Return success */
 }
@@ -87,6 +90,7 @@ struct card* deck_draw(struct deck* d)
 	if(d->top < 0)
 	{
 		/* Return failure. */
+		printf("go fish: deck is out of cards!\n");
 		return NULL;
 	}
 
@@ -94,7 +98,7 @@ struct card* deck_draw(struct deck* d)
 	struct card* c = malloc(sizeof(struct card));
 
 	/* Copy the card in the deck */
-	memmove(d->cards + d->top, c, sizeof(struct card));
+	memmove(c, d->cards + d->top, sizeof(struct card));
 
 	/* Delete the card from the deck */
 	memset(d->cards + d->top, 0, sizeof(struct card));
