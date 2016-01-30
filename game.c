@@ -170,6 +170,28 @@ int main(int argc, char** argv)
 
 	printf("done.\n");
 
+	/* Check to see if anyone got any sets off of the start */
+	int player_index;
+	for(player_index = 0;player_index < player_count;player_index++)
+	{
+		struct player* curr_player = game_players + player_index;
+		rank_t set = -1;
+		do
+		{
+			set = deck_get_set(&curr_player->d);
+
+			if(set > 0)
+			{
+				printf("%s: I have all of the %s\'s.\n",
+						curr_player->name,
+						rank_names[set]);
+				curr_player->books++;
+				sleep(DIALOG_SPEED);
+			}
+		} while(set != -1);
+	}
+
+
 	/** We're ready to play! */
 
 	int playing = 1;
@@ -186,7 +208,53 @@ int main(int argc, char** argv)
 				game_players + player_num;
 
 			/**
-			 * Tell the player to go.
+			 * Does this player have any cards in their hand?
+			 */
+			if(curr_player->d.top <= -1)
+			{
+				printf("game: %s has no cards.\n",
+						curr_player->name);
+
+				/* Sleep before draw */
+                                sleep(DIALOG_SPEED);
+
+				/**
+				 * Have the player draw a card
+				 */
+                                struct card* c = deck_draw(&game_deck);
+                                if(c != NULL)
+                                {
+                                        /* We got a card */
+                                        printf("game: %s drew a card.\n", curr_player->name);
+                                        /* Add the card to the player's deck */
+                                        deck_put(&curr_player->d, c);
+
+                                        /* Did the player get the card they asked for? */
+                                        if(c->r == r)
+                                        {
+                                                sleep(DIALOG_SPEED);
+                                                /* Player goes again */
+                                                player_num--;
+
+                                                printf("game: %s drew the card they asked for.\n",
+                                                                curr_player->name);
+                                        }
+
+                                        /* Free the card */
+                                        free(c);
+                                } else {
+                                        /* We didn't get a card. */
+                                        printf("game: the deck is empty.\n");
+                                }
+
+                                /* Sleep before the next player goes */
+                                sleep(DIALOG_SPEED);
+
+				continue;
+			}
+
+			/**
+			 * Tell the player it is their turn
 			 */
 			if(curr_player->my_turn(curr_player, &r, &p) != 0)
 			{
@@ -194,9 +262,15 @@ int main(int argc, char** argv)
 				exit(1);
 			}
 
+			/**
+			 * The player must actually have this card.
+			 */
+			struct card* has_card = 
+				deck_contains(&curr_player->d, r);
+
 			/* do a validity check */
 			if(r < R2 || r > RANK_MAX || !p 
-					|| p == curr_player)
+					|| p == curr_player || !has_card)
 			{
 				printf("go fish: player entered an "
 						"invalid move.\n");
@@ -205,10 +279,16 @@ int main(int argc, char** argv)
 				continue;
 			}
 
+			/**
+			 * Put this card back into the player's deck
+			 */
+			deck_put(&curr_player->d, has_card);
+			free(has_card); /* Free the card */
+
 			printf("%s: %s, do you have any %s's?\n",
 					curr_player->name, p->name,
 					rank_names[r]);
-			
+
 			/* Sleep */
 			sleep(DIALOG_SPEED);
 
@@ -231,8 +311,8 @@ int main(int argc, char** argv)
 			if(count > 0)
 			{
 				printf("%s: I have %d %s%s\n", p->name, 
-					count, rank_names[r], 
-					count == 1 ? "" : "\'s");
+						count, rank_names[r], 
+						count == 1 ? "" : "\'s");
 
 				/* Hand over all of the cards to the player */
 				int x;
@@ -272,8 +352,7 @@ int main(int argc, char** argv)
 				continue;
 			} else {
 				/* didn't get anything */
-				printf("%s: I don't have any %s's\n", p->name,
-						rank_names[r]);
+				printf("%s: Go fish.\n", p->name);
 				/* Sleep before draw */
 				sleep(DIALOG_SPEED);
 
@@ -292,7 +371,7 @@ int main(int argc, char** argv)
 						/* Player goes again */
 						player_num--;
 
-						printf("game: %s drew the card they asked for.",
+						printf("game: %s drew the card they asked for.\n",
 								curr_player->name);
 					}
 
@@ -302,30 +381,85 @@ int main(int argc, char** argv)
 					/* We didn't get a card. */
 					printf("game: the deck is empty.\n");
 				}
-			
+
 				/* Sleep before the next player goes */
 				sleep(DIALOG_SPEED);
 
 				/** 
-                                 * Do a quick check to see if the player 
-                                 * acquired a book 
-                                 */
-                                rank_t set = -1;
-                                do
-                                {
-                                        set = deck_get_set(&curr_player->d);
+				 * Do a quick check to see if the player 
+				 * acquired a book 
+				 */
+				rank_t set = -1;
+				do
+				{
+					set = deck_get_set(&curr_player->d);
 
-                                        if(set > 0)
-                                        {
-                                                printf("%s: I have all of the %s\'s.\n",
-                                                                curr_player->name, 
-                                                                rank_names[set]);
-                                                curr_player->books++;
-                                                sleep(DIALOG_SPEED);
-                                        }
-                                } while(set != -1);
+					if(set > 0)
+					{
+						printf("%s: I have all of the %s\'s.\n",
+								curr_player->name, 
+								rank_names[set]);
+						curr_player->books++;
+						sleep(DIALOG_SPEED);
+					}
+				} while(set != -1);
 			}
 		}
+
+		playing = 0;
+		/* Check to see if the game is over */
+		int x;
+		for(x = 0;x < player_count;x++)
+		{
+			/* Are there cards in this player's hand? */
+			if(game_players[x].d.top >= 0)
+			{
+				/* Found a card in someone's hand. */
+				playing = 1;
+			}
+		}
+	}
+
+	/** Who has the most books? */
+	int max_books = -1;
+	int winner_count = 0;
+	struct player* winners[player_count];
+
+	int x;
+	for(x = 0;x < player_count;x++)
+	{
+		if(game_players[x].books > max_books)
+		{
+			/* New record */
+			max_books = game_players[x].books;
+			memset(winners, 0, sizeof(struct player*) * 
+					player_count);
+			winners[0] = game_players + x;
+			winner_count = 1;
+		} else if(game_players[x].books == max_books)
+		{
+			/* Append a winner */
+			winners[winner_count] = game_players + x;
+			winner_count++;
+		}
+	}
+
+	/* Print out some new lines */
+	printf("\n\n");
+
+	const char* win_string = "won";
+	/* Is there a single winner? */
+	if(winner_count >= 1)
+	{
+		/* More than one winner */
+		printf("game: There was a tie between %d players.\n", 
+				winner_count);
+		win_string = "tied";
+	}
+
+	for(x = 0;x < winner_count;x++)
+	{
+		printf("%s has %s the game!", winners[x]->name, win_string);
 	}
 
 	return 0;

@@ -42,7 +42,7 @@
 /** ^^ Header guard */
 
 /* How slow should the dialog go? This is measured in seconds */
-#define DIALOG_SPEED 3
+#define DIALOG_SPEED 1
 
 /**
  * The suit of a given card

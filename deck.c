@@ -30,7 +30,7 @@ void deck_populate(struct deck* d)
 	for(r = R2; r <= RANK_MAX; r++)
 	{
 		/* For each rank, add one card of each suit */
-		for(s = CLUBS; s < SUIT_MAX; s++)
+		for(s = CLUBS; s <= SUIT_MAX; s++)
 		{
 			/* the card we are adding to the deck */
 			struct card c;
@@ -105,7 +105,6 @@ struct card* deck_draw(struct deck* d)
 	if(d->top < 0)
 	{
 		/* Return failure. */
-		printf("go fish: deck is out of cards!\n");
 		return NULL;
 	}
 

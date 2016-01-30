@@ -269,7 +269,9 @@ int human_player_turn(struct player* p,
 			/* Is the given rank valid? */
 			(human_r < R2 || human_r > RANK_MAX) ||
 			/* Is the given player valid? */
-			(human_p == NULL)
+			(human_p == NULL) ||
+			/* Do we have the card we're asking for? */
+			(!cards_count[human_r])
 	       );
 
 	/**
