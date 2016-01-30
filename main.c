@@ -1,34 +1,36 @@
-//Example card? game for UPL's C tutorial.
-//Needs to use loops, functions, arrays (dynamically allocated), structs, pointers.
-//Copyright Nik Ingrassia and Riccardo Mutschlechner, 2015
+/**
+ * Example card? game for UPL's C tutorial.
+ * Needs to use loops, functions, arrays (dynamically allocated), structs, pointers.
+ * Copyright Nik Ingrassia and Riccardo Mutschlechner, 2015
+ */
 
-//Includes with <> are for system libraries
+/* Use <header.h> to include a system header */
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-//Includes with "" are for local files
+/* Use "header.h" to include a local/custom header */
 #include "card.h"
-
 #include "player.h"
 #include "deck.h"
 
-//Defines are magic!
-//A define is replaced by its value before compiliation happens!
-//Defines are useful to set constants that don't use memory!
-
-int main(int argc, char** argv) {
-
-  //Time to make go fish!
-  /*
-  In case you don't remember/haven't played Go Fish,
-  here are the rules. Each player starts with X cards,
-  and on their turn are able to ask a fellow player for
-  a given number card. If the player has it, they give it
-  to the player. Otherwise, the player draws a card from
-  the deck. A player may discard any pair in their hand.
-  The goal of the game is to discard all of your cards!
-  */
+/** 
+ * main() is where the program starts. It can be in any file, but there
+ * must only be one main and it must return an integer value.
+ */
+int main(int argc, char** argv) 
+{
+  /**
+   * Time to make go fish!
+   *
+   * In case you don't remember/haven't played Go Fish,
+   * here are the rules. Each player starts with X cards,
+   * and on their turn are able to ask a fellow player for
+   * a given number card. If the player has it, they give it
+   * to the player. Otherwise, the player draws a card from
+   * the deck. A player may discard any pair in their hand.
+   * The goal of the game is to discard all of your cards!
+   */
 
   //declare variables here! 
 

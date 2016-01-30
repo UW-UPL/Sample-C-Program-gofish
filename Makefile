@@ -20,4 +20,4 @@ gofish: $(BINS)
 	gcc main.o deck.o player.o card.o -o gofish
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $< $@
+	$(CC) $(CFLAGS) -c -o $@ $<
