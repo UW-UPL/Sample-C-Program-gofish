@@ -1,3 +1,15 @@
+/**
+ * This game is provided as an example of good use of the C programming
+ * language for beginners. We assume you are familiar with simple
+ * programming constructs like for loops and pointers. Complicated
+ * functions are well documented. This game was originally written
+ * by Riccardo Mutschlechner <riccardo@cs.wisc.edu> and Nik Ingrassia,
+ * but was rewritten from scratch.
+ *
+ * Author: John Detter <jdetter@wisc.edu>
+ * 
+ */
+
 #include <string.h> /* Needed for memmove, strlen, strcmp */
 #include <stdio.h> /* Needed for printf */
 #include <unistd.h> /* Needed for read */
