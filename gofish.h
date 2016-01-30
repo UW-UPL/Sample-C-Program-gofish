@@ -41,7 +41,7 @@
 #define _GOFISH_H_
 /** ^^ Header guard */
 
-/* How slow should the dialog go? */
+/* How slow should the dialog go? This is measured in seconds */
 #define DIALOG_SPEED 3
 
 /**
