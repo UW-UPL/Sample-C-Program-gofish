@@ -1,7 +1,7 @@
 # Go Fish
 
 This game is provided free and open source by the UW-Madison Undergraduate 
-Projects Laboratory (UPL).
+Projects Laboratory (UPL). It is intended to be a decently simply sample C program.
 
 ## How to Play
 
