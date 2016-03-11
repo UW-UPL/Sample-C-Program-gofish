@@ -85,7 +85,8 @@ int main(int argc, char** argv)
 		if(player_count <= 0 || player_count >= PLAYERS_MAX)
 		{
 			sleep(DIALOG_SPEED); /* Sleep for 2 seconds */
-			printf("You entered an invalid player count, try again.\n");
+			printf("You entered an invalid player count. Exiting...\n");
+			return -1; 
 		}
 	} while(player_count <= 0);
 
